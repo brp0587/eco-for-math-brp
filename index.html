@@ -3,224 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Study Guide: Math for Economics I</title>
+    <title>Interactive Study Guide: Math for Economics I (Comprehensive)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1tBCYoUBPeb+cXEtjoNWqINzSMn@" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGjqcjN/aNpU1s0YZTY/fBs4+5rsApcLdHdhjDrROeAERhJgccdPciG/j/    " crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGjqcjN/aNpU1s0YZTY/fBs4+5rsApcLdHdhjDrROeAERhJgccdPciG/j/" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha340-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
         .content-section { display: none; }
         .content-section.active { display: block; }
-        /* Basic table styling for markdown tables */
         table { border-collapse: collapse; width: 100%; margin-bottom: 1rem; }
         th, td { border: 1px solid #e2e8f0; padding: 0.5rem 0.75rem; text-align: left; }
         th { background-color: #f7fafc; font-weight: 600; }
         code { background-color: #f1f5f9; padding: 0.1rem 0.3rem; border-radius: 0.25rem; font-family: monospace; }
+        /* Chart Container Styling (Necessary per requirements, even if charts are unused) */
+        .chart-container { position: relative; width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (max-width: 768px) { .chart-container { height: 300px; } }
+
         /* Placeholder Comments */
         <!-- Chosen Palette: Warm Neutrals (Beige background, dark gray text, subtle brown accents) -->
-        <!-- Application Structure Plan: Single-page app using a fixed sidebar for topic navigation (Logic, Functions, Sets, etc.) and a main content area. Clicking a topic displays the corresponding section using JS to manage visibility. Chosen for simple, direct access to study material sections. -->
+        <!-- Application Structure Plan: Dashboard-style single page with a fixed sidebar for rapid section navigation and a dynamic main content panel. The main content is divided into six thematic sections corresponding to course weeks/topics (Logic, Functions, Sets, Calculus, Macro, Finance). This structure prioritizes **user direct access and synthesis** of related formulas by topic, moving away from a linear report format. -->
         <!-- Visualization & Content Choices:
-            - Logic/Proof -> Text/Table -> JS Navigation -> Clarity/Organization -> HTML/Tailwind/KaTeX.
-            - Functions/Numbers/Inequalities -> Text/Table/Formulas -> JS Navigation -> Clarity/Accuracy -> HTML/Tailwind/KaTeX.
-            - Set Theory -> Text/Table/Set Notation -> JS Navigation -> Clarity/Organization -> HTML/Tailwind/KaTeX.
-            - Finance/Growth -> Text/Table/Formulas -> JS Navigation -> Clarity/Accuracy -> HTML/Tailwind/KaTeX.
-            - Calculus/Limits -> Text/Table/Formulas -> JS Navigation -> Clarity/Accuracy -> HTML/Tailwind/KaTeX.
-            - Dynamics -> Text/Table/Formulas -> JS Navigation -> Clarity/Accuracy -> HTML/Tailwind/KaTeX.
-            - No Chart.js/Plotly.js used: Source is a study guide without visualizable datasets. Math rendered using KaTeX. -->
+            - Formulas/Definitions -> Text/Tables/KaTeX -> JS Navigation, Toggleable Details (Implicit) -> Clarity/Accuracy/Completeness -> HTML/Tailwind/KaTeX.
+            - Rules (Algebra, Calculus) -> Tables -> Direct lookup -> Organization -> HTML/Tailwind/KaTeX.
+            - Dynamics/Time Path -> Explicit Formulas/Parameters -> Text Block -> Direct Application -> HTML/Tailwind/KaTeX.
+            - No Chart.js/Plotly.js used: Source is a study guide consisting of mathematical notation and concepts, not quantitative data suitable for charts. Math rendering uses KaTeX. -->
         <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     </style>
 </head>
 <body class="bg-beige-50 text-gray-800">
-    <div class="flex h-screen">
+    <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <aside class="w-64 bg-stone-200 p-6 overflow-y-auto fixed h-full shadow-md">
-            <h2 class="text-xl font-semibold mb-6 text-stone-700">Topics</h2>
+        <aside class="w-64 bg-stone-200 p-6 overflow-y-auto sticky top-0 h-screen shadow-md hidden md:block">
+            <h2 class="text-xl font-semibold mb-6 text-stone-700">Topic Index</h2>
             <nav>
                 <ul class="space-y-3">
-                    <li><a href="#logic" class="nav-link text-stone-600 hover:text-stone-800 hover:font-medium block rounded-md p-2 transition duration-150 ease-in-out" data-section="logic">1. Logic & Proof</a></li>
-                    <li><a href="#functions" class="nav-link text-stone-600 hover:text-stone-800 hover:font-medium block rounded-md p-2 transition duration-150 ease-in-out" data-section="functions">2. Functions & Inequalities</a></li>
-                    <li><a href="#sets" class="nav-link text-stone-600 hover:text-stone-800 hover:font-medium block rounded-md p-2 transition duration-150 ease-in-out" data-section="sets">3. Set Theory & Budget</a></li>
-                    <li><a href="#calculus" class="nav-link text-stone-600 hover:text-stone-800 hover:font-medium block rounded-md p-2 transition duration-150 ease-in-out" data-section="calculus">4. Calculus & Optimization</a></li>
-                    <li><a href="#macro" class="nav-link text-stone-600 hover:text-stone-800 hover:font-medium block rounded-md p-2 transition duration-150 ease-in-out" data-section="macro">5. Macro & Dynamic Models</a></li>
-                    <li><a href="#finance" class="nav-link text-stone-600 hover:text-stone-800 hover:font-medium block rounded-md p-2 transition duration-150 ease-in-out" data-section="finance">6. Financial Mathematics</a></li>
+                    <li><a href="#logic" class="nav-link text-stone-600 hover:text-stone-800 block rounded-md p-2 transition duration-150 ease-in-out" data-section="logic">1. Logic & Proof</a></li>
+                    <li><a href="#functions" class="nav-link text-stone-600 hover:text-stone-800 block rounded-md p-2 transition duration-150 ease-in-out" data-section="functions">2. Functions & Algebra</a></li>
+                    <li><a href="#sets" class="nav-link text-stone-600 hover:text-stone-800 block rounded-md p-2 transition duration-150 ease-in-out" data-section="sets">3. Set Theory</a></li>
+                    <li><a href="#calculus" class="nav-link text-stone-600 hover:text-stone-800 block rounded-md p-2 transition duration-150 ease-in-out" data-section="calculus">4. Differentiation & Opt.</a></li>
+                    <li><a href="#macro" class="nav-link text-stone-600 hover:text-stone-800 block rounded-md p-2 transition duration-150 ease-in-out" data-section="macro">5. Macro & Dynamics</a></li>
+                    <li><a href="#finance" class="nav-link text-stone-600 hover:text-stone-800 block rounded-md p-2 transition duration-150 ease-in-out" data-section="finance">6. Financial Math</a></li>
                 </ul>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 ml-64 p-8 overflow-y-auto">
-            <header class="mb-8">
-                <h1 class="text-3xl font-bold text-stone-800">Comprehensive Mathematical Formulas for Economics - I</h1>
-                <p class="text-stone-600 mt-2">An interactive guide synthesizing core formulas and assignment applications.</p>
+        <main class="flex-1 md:ml-64 p-4 md:p-8">
+            <header class="mb-8 p-4 bg-white rounded-lg shadow-sm">
+                <h1 class="text-3xl font-extrabold text-stone-800">Comprehensive Math for Economics - I Guide</h1>
+                <p class="text-stone-600 mt-2">Explore the essential formulas, rules, and economic applications of the course material. Use the sidebar or the navigation menu below to jump to a topic.</p>
+                <!-- Mobile Navigation (Dropdown) -->
+                <div class="md:hidden mt-4">
+                    <select id="mobile-nav" class="w-full p-2 border border-stone-300 rounded-md bg-white text-stone-700">
+                        <option value="welcome">Select a Topic...</option>
+                        <option value="logic">1. Logic & Proof</option>
+                        <option value="functions">2. Functions & Algebra</option>
+                        <option value="sets">3. Set Theory</option>
+                        <option value="calculus">4. Differentiation & Opt.</option>
+                        <option value="macro">5. Macro & Dynamics</option>
+                        <option value="finance">6. Financial Math</option>
+                    </select>
+                </div>
             </header>
 
+            <div id="welcome" class="content-section active p-6 bg-white rounded-lg shadow-xl transition-all duration-300">
+                 <h2 class="text-2xl font-semibold mb-4 text-stone-700">Welcome to the Interactive Formula Guide</h2>
+                 <p class="text-stone-600">This section provides an overview of the application. The goal of this interactive guide is to help you synthesize and quickly reference all key mathematical concepts needed for the course, whether they appeared directly in assignments or not. Navigate using the fixed sidebar (or the dropdown on mobile) to explore comprehensive tables of rules, definitions, and equations. This structure moves away from the source report's linear chapter format, offering thematic, direct access to the information you need most.</p>
+             </div>
+
             <!-- Logic Section -->
-            <section id="logic" class="content-section p-6 bg-white rounded-lg shadow mb-6">
-                <h2 class="text-2xl font-semibold mb-4 text-stone-700 border-b pb-2">1. Logic and Proof: Necessary & Sufficient Conditions</h2>
-                <p class="mb-4 text-stone-600">This area is crucial for understanding causality and logical constraints in economic theory.</p>
-                <table>
+            <section id="logic" class="content-section p-6 bg-white rounded-lg shadow-xl mb-6 transition-all duration-300">
+                <h2 class="text-2xl font-semibold mb-4 text-stone-700 border-b pb-2">1. Logic and Proof: Foundations</h2>
+                <p class="mb-4 text-stone-600">This section covers the basic logical structure required for formal economic proofs and definitions, helping you understand the distinction between necessary and sufficient conditions.</p>
+                <h3 class="text-xl font-semibold mt-4 mb-2 text-stone-700">A. Connectives and Quantifiers</h3>
+                 <table>
                     <thead>
-                        <tr><th>Concept</th><th>Notation</th><th>Interpretation</th><th>Condition Type</th></tr>
+                        <tr><th>Concept</th><th>Notation</th><th>Meaning</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Implication</td><td>$$ A \rightarrow B $$</td><td>"If $A$, then $B$." ($A$ leads to $B$).</td><td>$A$ is the <strong>sufficient condition</strong> for $B$. $B$ is the <strong>necessary condition</strong> for $A$.</td></tr>
-                        <tr><td>Equivalence</td><td>$$ A \leftrightarrow B $$</td><td>"$A$ if and only if $B$ (iff $B$)."</td><td>$A$ is <strong>necessary and sufficient</strong> for $B$. (Assignment Q1, Week 0).</td></tr>
-                        <tr><td>Converse</td><td>$$ B \rightarrow A $$</td><td>"If $B$, then $A$." (The reverse).</td><td>Not logically equivalent to $A \rightarrow B$.</td></tr>
-                        <tr><td>Contrapositive</td><td>$$ \neg B \rightarrow \neg A $$</td><td>"If not $B$, then not $A$."</td><td><strong>Logically equivalent</strong> to $A \rightarrow B$.</td></tr>
+                        <tr><td>Negation</td><td>$$ \neg A $$</td><td>"Not $A$."</td></tr>
+                        <tr><td>Conjunction</td><td>$$ A \land B $$</td><td>"$A$ and $B$."</td></tr>
+                        <tr><td>Disjunction</td><td>$$ A \lor B $$</td><td>"$A$ or $B$ (or both)."</td></tr>
+                        <tr><td>Implication</td><td>$$ A \rightarrow B $$</td><td>"If $A$, then $B$."</td></tr>
+                        <tr><td>Equivalence</td><td>$$ A \leftrightarrow B $$</td><td>"$A$ if and only if $B$ (iff $B$)."</td></tr>
+                        <tr><td>Universal Quantifier</td><td>$$ \forall x $$</td><td>"For all $x$."</td></tr>
+                        <tr><td>Existential Quantifier</td><td>$$ \exists x $$</td><td>"There exists an $x$."</td></tr>
                     </tbody>
                 </table>
-                <h3 class="text-lg font-semibold mt-4 mb-2 text-stone-700">Assignment Application (Q3, Week 1):</h3>
-                <ul class="list-disc pl-5 space-y-2 text-stone-600">
-                    <li>
-                        <strong>Implication:</strong> $$(x-1)(x-2)(x-3)=0 \rightarrow x=1$$
-                        <span class="text-red-600 ml-2">This is FALSE.</span> If $x=2$, the first part is true, but the second part ($x=1$) is false.
-                    </li>
-                    <li>
-                        <strong>Converse:</strong> $$x=1 \rightarrow (x-1)(x-2)(x-3)=0$$
-                        <span class="text-green-600 ml-2">This is TRUE.</span> If $x=1$, the expression equals $(0)(-1)(-2) = 0$.
-                    </li>
-                </ul>
+                <h3 class="text-xl font-semibold mt-6 mb-2 text-stone-700">B. Conditions and Logical Equivalence</h3>
+                <table>
+                    <thead>
+                        <tr><th>Relationship</th><th>Logical Form</th><th>Condition Type</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Direct Implication</td><td>$$ A \rightarrow B $$</td><td>$A$ is <strong>Sufficient</strong> for $B$. $B$ is <strong>Necessary</strong> for $A$.</td></tr>
+                        <tr><td>Converse</td><td>$$ B \rightarrow A $$</td><td>Not logically equivalent to $A \rightarrow B$.</td></tr>
+                        <tr><td>Contrapositive</td><td>$$ \neg B \rightarrow \neg A $$</td><td><strong>Logically Equivalent</strong> to $A \rightarrow B$.</td></tr>
+                        <tr><td>Biconditional</td><td>$$ A \leftrightarrow B $$</td><td>$A$ is <strong>Necessary and Sufficient</strong> for $B$.</td></tr>
+                    </tbody>
+                </table>
             </section>
 
             <!-- Functions Section -->
-            <section id="functions" class="content-section p-6 bg-white rounded-lg shadow mb-6">
-                <h2 class="text-2xl font-semibold mb-4 text-stone-700 border-b pb-2">2. Functions, Real Numbers, and Inequalities</h2>
-                <p class="mb-4 text-stone-600">This covers the valid domain of functions and solving fundamental inequalities.</p>
-                <h3 class="text-xl font-semibold mt-4 mb-2 text-stone-700">A. Inequalities and Absolute Value</h3>
+            <section id="functions" class="content-section p-6 bg-white rounded-lg shadow-xl mb-6 transition-all duration-300">
+                <h2 class="text-2xl font-semibold mb-4 text-stone-700 border-b pb-2">2. Functions, Real Numbers, and Algebra</h2>
+                <p class="mb-4 text-stone-600">This section details the fundamental rules governing real numbers, algebraic operations, and function properties necessary for economic modeling.</p>
+                <h3 class="text-xl font-semibold mt-4 mb-2 text-stone-700">A. Function Domain Rules</h3>
+                <p class="mb-2 text-stone-600">The domain is the set of valid inputs ($x$) for a function $f(x)$ to return a real number.</p>
+                <ul class="list-disc pl-5 space-y-2 text-stone-600">
+                    <li><strong>Square Root:</strong> For $f(x) = \sqrt{g(x)}$, the domain requires $\mathbf{g(x) \ge 0}$.</li>
+                    <li><strong>Rational Function:</strong> For $f(x) = \frac{g(x)}{h(x)}$, the domain requires $\mathbf{h(x) \ne 0}$.</li>
+                    <li><strong>Logarithm:</strong> For $f(x) = \ln(g(x))$, the domain requires $\mathbf{g(x) > 0}$.</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-2 text-stone-700">B. Inequalities and Absolute Value</h3>
                  <table>
                     <thead>
-                        <tr><th>Concept</th><th>Formula</th><th>Rule / Solution Method</th></tr>
+                        <tr><th>Inequality</th><th>Expansion / Solution</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Absolute Value</td><td>$$|x-a| < k$$</td><td>This expands to: $$-k < x-a < k$$</td></tr>
+                        <tr><td>$$ |x| < k \quad (k>0) $$</td><td>$$ -k < x < k $$</td></tr>
+                        <tr><td>$$ |x| > k \quad (k>0) $$</td><td>$$ x < -k \text{ or } x > k $$</td></tr>
+                        <tr><td>Quadratic Formula (for $ax^2+bx+c=0$)</td><td>$$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} $$</td></tr>
                     </tbody>
                 </table>
-                 <h4 class="text-lg font-semibold mt-4 mb-2 text-stone-700">Assignment Application (Q1, Week 1):</h4>
-                 <p class="text-stone-600">Problem: Solve $$|x+1| < 5$$</p>
-                 <p class="text-stone-600">Solution: $$-5 < x+1 < 5$$ Subtract 1 from all parts: $$-5 - 1 < x < 5 - 1 \quad \rightarrow \quad \mathbf{-6 < x < 4}$$</p>
-
-                <h3 class="text-xl font-semibold mt-6 mb-2 text-stone-700">B. Domain and Undefined Points</h3>
-                <table>
-                     <thead>
-                        <tr><th>Concept</th><th>Formula</th><th>Condition for Real Domain</th><th>Undefined Condition</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Square Root Function</td><td>$$ f(x) = \sqrt{g(x)} $$</td><td>Term under root must be non-negative: $$ \mathbf{g(x) \ge 0} $$</td><td>N/A</td></tr>
-                        <tr><td>Rational Function</td><td>$$ h(x) = \frac{f(x)}{g(x)} $$</td><td>N/A</td><td>Undefined when denominator is zero: $$ \mathbf{g(x) = 0} $$</td></tr>
-                    </tbody>
-                </table>
-                <h4 class="text-lg font-semibold mt-4 mb-2 text-stone-700">Assignment Application:</h4>
-                <ul class="list-disc pl-5 space-y-2 text-stone-600">
-                    <li><strong>Domain (Q1, Week 3):</strong> For $g(x) = \sqrt{x-1}$, require $x-1 \ge 0$, thus $\mathbf{x \ge 1}$.</li>
-                    <li><strong>Undefined Points (Q8, Week 1):</strong> For $\frac{x^2+x}{x(x+1)(x-4)}$, undefined where $x(x+1)(x-4) = 0$. Occurs at $\mathbf{x=0, x=-1, \text{ and } x=4}$.</li>
-                 </ul>
             </section>
 
              <!-- Sets Section -->
-            <section id="sets" class="content-section p-6 bg-white rounded-lg shadow mb-6">
-                <h2 class="text-2xl font-semibold mb-4 text-stone-700 border-b pb-2">3. Set Theory and Budget Constraints</h2>
-                 <p class="mb-4 text-stone-600">Used for modeling consumption bundles and aggregating groups.</p>
-                <h3 class="text-xl font-semibold mt-4 mb-2 text-stone-700">A. Set Operations and Counting Rules</h3>
+            <section id="sets" class="content-section p-6 bg-white rounded-lg shadow-xl mb-6 transition-all duration-300">
+                <h2 class="text-2xl font-semibold mb-4 text-stone-700 border-b pb-2">3. Set Theory and Economic Sets</h2>
+                 <p class="mb-4 text-stone-600">Understanding sets is essential for defining economic spaces, such as consumption bundles and probability spaces.</p>
+                <h3 class="text-xl font-semibold mt-4 mb-2 text-stone-700">A. Core Set Operations</h3>
                 <table>
                      <thead>
-                        <tr><th>Concept</th><th>Formula</th><th>Meaning</th><th>Assignment Application</th></tr>
+                        <tr><th>Concept</th><th>Notation</th><th>Formula / Meaning</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Union Size</td><td>$$ n(A \cup B) = n(A) + n(B) - n(A \cap B) $$</td><td>Elements in $A$ <strong>or</strong> $B$ (or both).</td><td>Calculating total participants in sports (Week 2).</td></tr>
-                        <tr><td>Difference</td><td>$$ A \setminus B $$</td><td>Elements in $A$ <strong>but not in</strong> $B$.</td><td><strong>Q1 (Week 2):</strong> $G \setminus H$ (Graduates not in Hostel).</td></tr>
-                        <tr><td>Symmetric Difference</td><td>$$ n(A \Delta B) = n(A \cup B) - n(A \cap B) $$</td><td>Elements in $A$ <strong>or</strong> $B$<strong>, but not both</strong>.</td><td>Calculating participants in only one sport (Week 2).</td></tr>
-                        <tr><td>Total Subsets</td><td>$$ \mathbf{2^n} $$</td><td>Number of subsets for a set with $n$ elements.</td><td><strong>Q8 (Week 2):</strong> Set with 4 elements has $2^4 = \mathbf{16}$ subsets.</td></tr>
+                        <tr><td>Union</td><td>$$ A \cup B $$</td><td>Elements in $A$ or $B$.</td></tr>
+                        <tr><td>Intersection</td><td>$$ A \cap B $$</td><td>Elements in $A$ and $B$.</td></tr>
+                        <tr><td>Difference</td><td>$$ A \setminus B $$</td><td>Elements in $A$ but not in $B$.</td></tr>
+                        <tr><td>Total Subsets</td><td>$$ 2^n $$</td><td>Number of subsets for a set with $n$ elements.</td></tr>
+                        <tr><td>Size of Union</td><td>$$ n(A \cup B) = n(A) + n(B) - n(A \cap B) $$</td><td>The Inclusion-Exclusion Principle.</td></tr>
                      </tbody>
                 </table>
 
-                <h3 class="text-xl font-semibold mt-6 mb-2 text-stone-700">B. Budget Constraint (Microeconomics)</h3>
-                <p class="mb-2 text-stone-600">The boundary of feasible consumption for goods $x, y$ with prices $P_x, P_y$ and income $I$.</p>
-                <ol class="list-decimal pl-5 space-y-2 text-stone-600">
-                    <li><strong>Budget Constraint (Inequality):</strong> Expenditure $\le$ Income. $$ \mathbf{P_x x + P_y y \le I} $$</li>
-                    <li><strong>Budget Set (Set Notation):</strong> All affordable bundles. $$ \{(x, y): P_x x + P_y y \le I, x \ge 0, y \ge 0\} $$</li>
-                 </ol>
-                <h4 class="text-lg font-semibold mt-4 mb-2 text-stone-700">Assignment Application (Q6, Week 2):</h4>
-                <ul class="list-disc pl-5 space-y-1 text-stone-600">
-                    <li>Given: $I=800$, $P_x=20$, $P_y=10$.</li>
-                    <li>Constraint: $$ 20x + 10y \le 800 \quad \rightarrow \quad \mathbf{2x + y \le 80} $$</li>
-                </ul>
+                <h3 class="text-xl font-semibold mt-6 mb-2 text-stone-700">B. Budget Set Definition (Consumption)</h3>
+                <p class="mb-2 text-stone-600">For two goods ($x_1, x_2$) with prices ($P_1, P_2$) and income $I$:</p>
+                <ul class="list-disc pl-5 space-y-2 text-stone-600">
+                    <li><strong>Budget Constraint:</strong> The limit on expenditure. $$ P_1 x_1 + P_2 x_2 \le I $$</li>
+                    <li><strong>Budget Set:</strong> The collection of all affordable consumption bundles. $$ \{(x_1, x_2): P_1 x_1 + P_2 x_2 \le I, x_1 \ge 0, x_2 \ge 0\} $$</li>
+                 </ul>
             </section>
 
             <!-- Calculus Section -->
-            <section id="calculus" class="content-section p-6 bg-white rounded-lg shadow mb-6">
-                <h2 class="text-2xl font-semibold mb-4 text-stone-700 border-b pb-2">4. Calculus: Differentiation and Optimization</h2>
-                <p class="mb-4 text-stone-600">The core of marginal analysis and finding maxima/minima in economics.</p>
-                <h3 class="text-xl font-semibold mt-4 mb-2 text-stone-700">A. Differentiation Rules and FOC</h3>
+            <section id="calculus" class="content-section p-6 bg-white rounded-lg shadow-xl mb-6 transition-all duration-300">
+                <h2 class="text-2xl font-semibold mb-4 text-stone-700 border-b pb-2">4. Differentiation, Extrema, and Integration</h2>
+                <p class="mb-4 text-stone-600">The mathematical toolkit for marginal analysis, elasticity, and optimization in both micro- and macroeconomics.</p>
+                <h3 class="text-xl font-semibold mt-4 mb-2 text-stone-700">A. Core Differentiation Rules</h3>
                 <table>
                      <thead>
-                        <tr><th>Concept</th><th>Formula</th><th>Economic Significance</th></tr>
+                        <tr><th>Rule</th><th>Function / Operation</th><th>Derivative</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Derivative Definition</td><td>$$ f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} $$</td><td>Represents the <strong>Marginal</strong> change.</td></tr>
-                        <tr><td>Power Rule</td><td>$$ \frac{d}{dx} x^n = nx^{n-1} $$</td><td>Fundamental rule for calculating marginal functions.</td></tr>
-                        <tr><td>Profit Function</td><td>$$ \pi(Q) = R(Q) - C(Q) $$</td><td>Profit = Total Revenue - Total Cost.</td></tr>
-                        <tr><td>FOC for Extrema</td><td>$$ \mathbf{g'(c) = 0} $$</td><td><strong>First Order Condition:</strong> Necessary for max/min at interior point $c$. (Assign. Q2, Week 0).</td></tr>
-                        <tr><td>Average Cost Minimum</td><td>$$ \mathbf{A(q^*) = C'(q^*)} $$</td><td>Average Cost = Marginal Cost at the minimum AC.</td></tr>
+                        <tr><td>Power Rule</td><td>$$ y = x^n $$</td><td>$$ \frac{dy}{dx} = nx^{n-1} $$</td></tr>
+                        <tr><td>Product Rule</td><td>$$ y = f(x)g(x) $$</td><td>$$ y' = f'(x)g(x) + f(x)g'(x) $$</td></tr>
+                        <tr><td>Quotient Rule</td><td>$$ y = \frac{f(x)}{g(x)} $$</td><td>$$ y' = \frac{f'(x)g(x) - f(x)g'(x)}{[g(x)]^2} $$</td></tr>
+                        <tr><td>Chain Rule</td><td>$$ y = f(g(x)) $$</td><td>$$ y' = f'(g(x)) \cdot g'(x) $$</td></tr>
+                        <tr><td>Exponential Rule</td><td>$$ y = e^{ax} $$</td><td>$$ y' = ae^{ax} $$</td></tr>
                     </tbody>
                 </table>
-                <h3 class="text-xl font-semibold mt-6 mb-2 text-stone-700">B. Integration and Series</h3>
+                <h3 class="text-xl font-semibold mt-6 mb-2 text-stone-700">B. Optimization (Extrema)</h3>
                  <table>
                      <thead>
-                        <tr><th>Concept</th><th>Formula / Condition</th><th>Application / Rule</th></tr>
+                        <tr><th>Concept</th><th>Condition / Rule</th><th>Notes</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Integration by Parts</td><td>$$ \mathbf{\int u dv = uv - \int v du} $$</td><td><strong>Q7 (Week 0):</strong> Specific form: $$ \int f(x)g^{\prime}(x)dx = f(x)g(x) - \int g(x)f^{\prime}(x)dx $$</td></tr>
-                        <tr><td>Geometric Series</td><td>$$ d+dr+dr^2+\dots $$</td><td>Converges if ratio $|r| < 1$. Used in Keynesian Multiplier. (Assign. Q6, Week 0).</td></tr>
-                     </tbody>
+                        <tr><td>FOC (Necessary)</td><td>$$ f'(c) = 0 $$</td><td>First Order Condition: Required for a local max or min at an interior point $c$.</td></tr>
+                        <tr><td>SOC (Sufficient for Max)</td><td>$$ f''(c) < 0 $$</td><td>Second Order Condition: Confirms a local **Maximum** at $c$.</td></tr>
+                        <tr><td>SOC (Sufficient for Min)</td><td>$$ f''(c) > 0 $$</td><td>Second Order Condition: Confirms a local **Minimum** at $c$.</td></tr>
+                        <tr><td>Marginal Cost vs. Average Cost</td><td>$$ AC(q^*) = MC(q^*) $$</td><td>Average Cost is minimized ($AC'$=0) when Marginal Cost equals Average Cost.</td></tr>
+                    </tbody>
                 </table>
+                <h3 class="text-xl font-semibold mt-6 mb-2 text-stone-700">C. Integration</h3>
+                 <p class="mb-2 text-stone-600">Integration is used to find total functions from marginal functions (e.g., Total Cost from Marginal Cost).</p>
+                 <ul class="list-disc pl-5 space-y-2 text-stone-600">
+                    <li><strong>Integration by Parts:</strong> $$ \mathbf{\int u dv = uv - \int v du} $$</li>
+                    <li><strong>Fundamental Theorem:</strong> If $F'(x) = f(x)$, then $\int_{a}^{b} f(x) dx = F(b) - F(a)$.</li>
+                 </ul>
             </section>
 
              <!-- Macro Section -->
-            <section id="macro" class="content-section p-6 bg-white rounded-lg shadow mb-6">
+            <section id="macro" class="content-section p-6 bg-white rounded-lg shadow-xl mb-6 transition-all duration-300">
                 <h2 class="text-2xl font-semibold mb-4 text-stone-700 border-b pb-2">5. Macroeconomics and Dynamic Models</h2>
-                 <p class="mb-4 text-stone-600">Modeling aggregate income and its change over time.</p>
-                <h3 class="text-xl font-semibold mt-4 mb-2 text-stone-700">A. Simple Income Determination (Macro Model)</h3>
-                <ol class="list-decimal pl-5 space-y-2 text-stone-600">
-                    <li><strong>Equilibrium Condition:</strong> Aggregate Supply = Aggregate Demand. $$ Y = C + I $$</li>
-                    <li><strong>Consumption Function:</strong> $$ C = a + bY $$ ($b$ = Marginal Propensity to Consume, $0 < b < 1$)</li>
-                    <li><strong>Equilibrium Income:</strong> (Assuming $I = \bar{I}$) $$ Y = \frac{a}{1-b} + \frac{\bar{I}}{1-b} $$</li>
-                </ol>
+                 <p class="mb-4 text-stone-600">This section focuses on the simple Keynesian model and dynamic analysis of economic variables over discrete time periods.</p>
+                <h3 class="text-xl font-semibold mt-4 mb-2 text-stone-700">A. Simple Keynesian Model</h3>
+                <ul class="list-disc pl-5 space-y-2 text-stone-600">
+                    <li><strong>Consumption Function:</strong> $C = a + bY$ (where $b = MPC$, $0 < b < 1$).</li>
+                    <li><strong>Equilibrium Condition:</strong> Aggregate Supply ($Y$) = Aggregate Demand ($C+I$). $$ \mathbf{Y = \frac{a+I}{1-b}} $$</li>
+                    <li><strong>Multiplier:</strong> The change in equilibrium income ($\Delta Y$) resulting from a change in autonomous spending ($\Delta I$). $$ \mathbf{\frac{1}{1-b}} $$</li>
+                </ul>
 
-                <h3 class="text-xl font-semibold mt-6 mb-2 text-stone-700">B. Time Path of Variables (Dynamics)</h3>
-                <p class="mb-2 text-stone-600">Solution for a first-order linear difference equation.</p>
-                <table>
-                     <thead>
-                        <tr><th>Concept</th><th>Formula</th><th>Stability Condition</th><th>Type of Convergence (if stable)</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Time Path</td><td>$$ \mathbf{P_t = (P_0 - P^*)b^t + P^*} $$</td><td>$$ \mathbf{|b| < 1} $$</td><td><strong>Monotone:</strong> If $b > 0$.<br><strong>Oscillating:</strong> If $-1 < b < 0$.</td></tr>
-                        <tr><td>Equilibrium Price</td><td>$\mathbf{P^*}$</td><td colspan="2">$P^*$ is the <strong>Intertemporal Equilibrium Price</strong> (Particular Integral).</td></tr>
-                    </tbody>
-                </table>
-                 <p class="mt-3 text-stone-600">(From "Book Compressed.pdf" snippet: $P_t = (P_0 - 8)(0.4)^t + 8$. Here, $P^*=8$ and $b=0.4$. Stable, Monotone Convergence).</p>
+                <h3 class="text-xl font-semibold mt-6 mb-2 text-stone-700">B. First-Order Linear Difference Equations</h3>
+                <p class="mb-2 text-stone-600">General solution for $Y_t = bY_{t-1} + a$.</p>
+                <ul class="list-disc pl-5 space-y-2 text-stone-600">
+                    <li><strong>Time Path Solution:</strong> $$ \mathbf{Y_t = (Y_0 - Y^*)b^t + Y^*} $$</li>
+                    <li><strong>Equilibrium Value (Particular Integral):</strong> $$ \mathbf{Y^* = \frac{a}{1-b}} $$</li>
+                    <li><strong>Stability Condition:</strong> The system converges to equilibrium if the coefficient $b$ satisfies: $$ \mathbf{|b| < 1} $$</li>
+                    <li><strong>Type of Convergence:</strong> Monotone if $0 < b < 1$; Oscillating if $-1 < b < 0$.</li>
+                </ul>
             </section>
 
             <!-- Finance Section -->
-            <section id="finance" class="content-section p-6 bg-white rounded-lg shadow mb-6">
+            <section id="finance" class="content-section p-6 bg-white rounded-lg shadow-xl mb-6 transition-all duration-300">
                 <h2 class="text-2xl font-semibold mb-4 text-stone-700 border-b pb-2">6. Financial Mathematics</h2>
-                <p class="mb-4 text-stone-600">Formulas for compound growth and doubling time.</p>
+                <p class="mb-4 text-stone-600">Key formulas for calculating future and present values under different compounding scenarios.</p>
+                 <h3 class="text-xl font-semibold mt-4 mb-2 text-stone-700">A. Compounding and Discounting</h3>
                  <table>
                      <thead>
-                        <tr><th>Concept</th><th>Formula</th><th>Application</th></tr>
+                        <tr><th>Concept</th><th>Formula</th><th>Notes</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Compound Interest</td><td>$$ \mathbf{A(t) = P(1+r)^t} $$</td><td>Calculate Future Value $A(t)$ for Principal $P$ at rate $r$ for $t$ periods. (Assign. Q3, Week 3).</td></tr>
-                        <tr><td>Rule of 70/72</td><td>$$ \mathbf{t \approx \frac{70}{\text{Growth Rate (\%)}}} $$</td><td>Approximates time ($t$) required for an amount to double. (Assign. Q2, Week 3).</td></tr>
-                        <tr><td>Special Limit (e)</td><td>$$ \mathbf{\lim_{n\rightarrow\infty}\left(1+\frac{1}{n}\right)^{n} = e} $$</td><td>Definition of $e$, used for continuous compounding. (Assign. Q8, Week 0).</td></tr>
-                     </tbody>
+                        <tr><td>Future Value (Discrete)</td><td>$$ \mathbf{FV = P(1+r)^t} $$</td><td>$P=$ Principal, $r=$ rate per period, $t=$ number of periods.</td></tr>
+                        <tr><td>Compounding $n$ times/year</td><td>$$ \mathbf{FV = P\left(1+\frac{r}{n}\right)^{nt}} $$</td><td>$r=$ annual rate, $n=$ compounding frequency.</td></tr>
+                        <tr><td>Present Value (Discounting)</td><td>$$ \mathbf{PV = \frac{FV}{(1+r)^t}} $$</td><td>Used to find today's value of a future amount.</td></tr>
+                    </tbody>
                 </table>
+                 <h3 class="text-xl font-semibold mt-6 mb-2 text-stone-700">B. Continuous Compounding</h3>
+                 <ul class="list-disc pl-5 space-y-2 text-stone-600">
+                    <li><strong>Limit Definition of $e$:</strong> $$ \mathbf{\lim_{n\rightarrow\infty}\left(1+\frac{1}{n}\right)^{n} = e} $$</li>
+                    <li><strong>Future Value (Continuous):</strong> $$ \mathbf{FV = Pe^{rt}} $$</li>
+                    <li><strong>Rule of 70/72:</strong> Time to double (in years) $\approx \frac{70}{\text{Growth Rate (\%)}}$.</li>
+                 </ul>
             </section>
-
-             <div id="welcome" class="content-section active p-6 bg-white rounded-lg shadow">
-                 <h2 class="text-2xl font-semibold mb-4 text-stone-700">Welcome!</h2>
-                 <p class="text-stone-600">Select a topic from the sidebar on the left to view the relevant mathematical formulas, concepts, and assignment applications for your Economics course.</p>
-             </div>
 
         </main>
     </div>
@@ -241,6 +256,7 @@
             const navLinks = document.querySelectorAll('.nav-link');
             const contentSections = document.querySelectorAll('.content-section');
             const welcomeSection = document.getElementById('welcome');
+            const mobileNav = document.getElementById('mobile-nav');
 
             // Function to handle navigation
             function navigateToSection(sectionId) {
@@ -251,7 +267,7 @@
                         section.classList.remove('active');
                     }
                 });
-                 // Update active link style
+                 // Update active link style for sidebar
                  navLinks.forEach(link => {
                      if (link.getAttribute('data-section') === sectionId) {
                          link.classList.add('bg-stone-300', 'font-medium');
@@ -261,25 +277,44 @@
                          link.classList.add('text-stone-600');
                      }
                  });
+
+                 // Update mobile dropdown
+                 if (mobileNav) {
+                     mobileNav.value = sectionId;
+                 }
             }
 
-            // Add click event listeners to nav links
+            // Add click event listeners to nav links (sidebar)
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
-                    e.preventDefault(); // Prevent default anchor behavior
+                    e.preventDefault();
                     const sectionId = link.getAttribute('data-section');
                     navigateToSection(sectionId);
-                     // Update URL hash without scrolling
                      history.pushState(null, null, `#${sectionId}`);
                 });
             });
+
+            // Add change listener for mobile dropdown
+            if (mobileNav) {
+                mobileNav.addEventListener('change', (e) => {
+                    const sectionId = e.target.value;
+                    if (sectionId && sectionId !== 'welcome') {
+                        navigateToSection(sectionId);
+                        history.pushState(null, null, `#${sectionId}`);
+                    } else if (sectionId === 'welcome') {
+                         navigateToSection('welcome');
+                         history.pushState(null, null, `#`);
+                    }
+                });
+            }
 
             // Handle initial section based on URL hash or default to welcome
             const initialHash = window.location.hash.substring(1);
             if (initialHash && document.getElementById(initialHash)) {
                 navigateToSection(initialHash);
             } else {
-                 welcomeSection.classList.add('active'); // Show welcome by default
+                 welcomeSection.classList.add('active');
+                 if (mobileNav) mobileNav.value = 'welcome';
             }
 
              // Handle back/forward navigation
@@ -288,7 +323,7 @@
                  if (hash && document.getElementById(hash)) {
                      navigateToSection(hash);
                  } else {
-                      navigateToSection('welcome'); // Default to welcome if hash is invalid or empty
+                      navigateToSection('welcome');
                  }
              });
 
@@ -300,18 +335,17 @@
           theme: {
             extend: {
               colors: {
-                 beige: { // Define warm neutral palette
-                   50: '#fdfbf7', // Lightest beige for body background
+                 beige: {
+                   50: '#fdfbf7',
                    100: '#fbf7f0',
                  },
-                 stone: { // Complimentary neutrals
-                    200: '#e7e5e4', // Sidebar background
-                    300: '#d6d3d1', // Active sidebar item background
-                    600: '#57534e', // Text color for links/paragraphs
-                    700: '#44403c', // Heading color
-                    800: '#292524'  // Main heading color
+                 stone: {
+                    200: '#e7e5e4',
+                    300: '#d6d3d1',
+                    600: '#57534e',
+                    700: '#44403c',
+                    800: '#292524'
                  },
-                 // Subtle accent colors can be added here if needed
               }
             }
           }
